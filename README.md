@@ -1,5 +1,5 @@
 # My (minimalist) MacOS dotfiles
-![Showcase image](showcase.png)
+![Showcase image](showcase.jpg)
 
 ## Programs
 - **Editor:** NeoVim (VSCode/JetBrains IDEs for web etc.)
