@@ -2,6 +2,8 @@
 
 palette = "catppuccin_frappe"
 
+command_timeout = 1000
+
 add_newline = false
 format = """
 $username\
@@ -80,14 +82,16 @@ $shell\
 $character"""
 
 [character]
-success_symbol = '[λ](bold green)'
-error_symbol = '[λ](bold red)'
+success_symbol = '[➜](bold green)'
+error_symbol = '[➜](bold red)'
+
 
 [git_branch]
 style = "bold mauve"
 
 [directory]
-truncation_length = 4
+truncation_length = 2
+truncation_symbol = '../'
 style = "bold lavender"
 
 [palettes.catppuccin_frappe]

@@ -1,4 +1,4 @@
-# My (minimalist) MacOS dotfiles
+# My (minimal) MacOS dotfiles
 ![Showcase image](showcase.jpg)
 
 ## Programs
@@ -21,3 +21,4 @@ I use space as my leader, and I have my right Option key set to Alt (set in Ghos
 |Tab|Cycle Bufferline to the right|n|
 |Shift+Tab|Cycle Bufferline to the left|n|
 |Space+f+f|LSP file format|n|
+|Space+e|LSP view line diagnostics|n|

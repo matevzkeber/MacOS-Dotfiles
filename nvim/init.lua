@@ -10,24 +10,25 @@ vim.o.swapfile = false
 vim.o.termguicolors = true
 vim.o.winborder = "rounded"
 
--- Plugins
-require('packer').startup(function(use)
-	use 'wbthomason/packer.nvim'
-	use { 'catppuccin/nvim', as = 'catppuccin' }                                               -- Colorscheme
-	use 'nvim-tree/nvim-tree.lua'                                                              -- File tree
-	use { 'nvim-lualine/lualine.nvim', requires = { 'nvim-tree/nvim-web-devicons', opt = true } } -- Bottom bar
-	use { 'akinsho/bufferline.nvim', tag = '*', requires = 'nvim-tree/nvim-web-devicons' }     -- Top bar
-	use { 'lewis6991/gitsigns.nvim' }                                                          -- Git
-	use 'nvim-tree/nvim-web-devicons'                                                          -- Nerd Font icons
-	use 'moll/vim-bbye'                                                                        -- Buffer stuff
-	use 'nvim-mini/mini-pairs.nvim'                                                            -- Pairs
-	use 'nvim-mini/mini-snippets.nvim'                                                         -- Snippets
-	use 'nvim-mini/mini-completion.nvim'                                                       -- Code completion
-	use 'williamboman/mason.nvim'                                                              -- LSPs
-	use 'williamboman/mason-lspconfig.nvim'
-	use 'neovim/nvim-lspconfig'                                                                -- LSP configs
-	use 'nvim-treesitter/nvim-treesitter'                                                      -- Syntax highlighting
-end)
+local gh = function(x) return 'https://github.com/' .. x end
+
+vim.pack.add({
+	{ src = gh('catppuccin/nvim'),                 name = 'catppuccin' },
+	gh('nvim-tree/nvim-web-devicons'),
+	gh('nvim-tree/nvim-tree.lua'),
+	gh('nvim-lualine/lualine.nvim'),
+	gh('akinsho/bufferline.nvim'),
+	gh('lewis6991/gitsigns.nvim'),
+	gh('moll/vim-bbye'),
+	gh('nvim-mini/mini.icons'),
+	gh('nvim-mini/mini.pairs'),
+	gh('nvim-mini/mini.snippets'),
+	gh('nvim-mini/mini.completion'),
+	gh('williamboman/mason.nvim'),
+	gh('williamboman/mason-lspconfig.nvim'),
+	gh('neovim/nvim-lspconfig'),
+	{ src = gh('nvim-treesitter/nvim-treesitter'), version = 'main',   build = ':TSUpdate' },
+})
 
 -- Configs
 require('gitsigns').setup()
@@ -43,7 +44,6 @@ vim.cmd.colorscheme 'catppuccin'
 
 require('lualine').setup {
 	options = {
-		theme = 'catppuccin',
 		component_separators = '',
 		section_separators = { left = '', right = '' }
 	}
@@ -59,6 +59,7 @@ require('bufferline').setup {
 	}
 }
 
+require('mini.icons').setup()
 require('mini.pairs').setup()
 require('mini.snippets').setup()
 require('mini.completion').setup {
@@ -71,14 +72,10 @@ require('mini.completion').setup {
 		auto_setup = true
 	}
 }
+require('mini.icons').tweak_lsp_kind()
 
 -- LSPs, highlighting
-require('nvim-treesitter.configs').setup {
-	auto_install = true,
-	highlight = { enable = true }
-}
-
-local servers = { 'pyright', 'gopls', 'ts_ls', 'jsonls', 'lua_ls', 'clangd', 'lua_ls' } -- 'hls' instaled with ghcup
+local servers = { 'pyright', 'gopls', 'ts_ls', 'jsonls', 'lua_ls', 'clangd' } -- 'hls' instaled with ghcup
 require('mason').setup()
 require('mason').setup { ensure_installed = servers }
 
@@ -94,6 +91,7 @@ vim.diagnostic.config({
 	underline = true,
 	severity_sort = true,
 	update_in_insert = true,
+	virtual_text = false,
 })
 
 -- Keybinds
@@ -105,3 +103,4 @@ vim.keymap.set('n', '<leader>k', ':Bdelete<CR>', { silent = true })           --
 vim.keymap.set('n', '<tab>', ':BufferLineCycleNext<CR>', { silent = true })   -- Cycling Bufferline
 vim.keymap.set('n', '<S-tab>', ':BufferLineCyclePrev<CR>', { silent = true }) -- Reverse cycling Bufferline
 vim.keymap.set('n', '<leader>ff', vim.lsp.buf.format)
+vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float)
