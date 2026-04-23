@@ -13,7 +13,7 @@ vim.o.winborder = "rounded"
 local gh = function(x) return 'https://github.com/' .. x end
 
 vim.pack.add({
-	{ src = gh('catppuccin/nvim'),                 name = 'catppuccin' },
+	{ src = gh('catppuccin/nvim'), name = 'catppuccin' },
 	gh('nvim-tree/nvim-web-devicons'),
 	gh('nvim-tree/nvim-tree.lua'),
 	gh('nvim-lualine/lualine.nvim'),
@@ -27,7 +27,11 @@ vim.pack.add({
 	gh('williamboman/mason.nvim'),
 	gh('williamboman/mason-lspconfig.nvim'),
 	gh('neovim/nvim-lspconfig'),
-	{ src = gh('nvim-treesitter/nvim-treesitter'), version = 'main',   build = ':TSUpdate' },
+	{
+		src = gh('nvim-treesitter/nvim-treesitter'),
+		version = 'main',
+		build = ':TSUpdate',
+	},
 })
 
 -- Configs
@@ -75,6 +79,36 @@ require('mini.completion').setup {
 require('mini.icons').tweak_lsp_kind()
 
 -- LSPs, highlighting
+
+local ts = require("nvim-treesitter");
+
+local parsers = {
+	"bash", "c", "cpp", "css", "diff", "csv",
+	"dockerfile", "go", "html", "haskell",
+	"gitignore", "javascript", "jsdoc", "json",
+	"lua", "luadoc", "make", "markdown", "markdown_inline",
+	"python", "regex", "rust", "svelte", "scss", "sql", "toml",
+	"typescript", "vim", "xml", "yaml", "zig",
+}
+require("nvim-treesitter").install(parsers)
+
+vim.api.nvim_create_autocmd("FileType", {
+	callback = function(args)
+		local buf, filetype = args.buf, args.match
+
+		local language = vim.treesitter.language.get_lang(filetype)
+		if not language then
+			return
+		end
+
+		if not vim.treesitter.language.add(language) then
+			return
+		end
+
+		vim.treesitter.start(buf, language)
+	end,
+})
+
 local servers = { 'pyright', 'gopls', 'ts_ls', 'jsonls', 'lua_ls', 'clangd' } -- 'hls' instaled with ghcup
 require('mason').setup()
 require('mason').setup { ensure_installed = servers }
