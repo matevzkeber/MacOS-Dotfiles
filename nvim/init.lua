@@ -138,3 +138,4 @@ vim.keymap.set('n', '<tab>', ':BufferLineCycleNext<CR>', { silent = true })   --
 vim.keymap.set('n', '<S-tab>', ':BufferLineCyclePrev<CR>', { silent = true }) -- Reverse cycling Bufferline
 vim.keymap.set('n', '<leader>ff', vim.lsp.buf.format)
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float)
+vim.keymap.set('n', '<leader>c', ':%y+<CR>')
